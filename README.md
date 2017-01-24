@@ -3,7 +3,7 @@ Assignments
 
 This is the [CSE-20289-SP17] reading and homework assignments repository for:
 
-* **Name**:  Shane Ryan
+* **Name**:  Shane Ryan!
 * **NetID**: sryan8
 
 Readings
