@@ -1,0 +1,135 @@
+Notes from Wednesday's class:
+
+
+
+Warmup Questions:
+
+What is unix?
+    A family of operating systems based on a central idea / framework.
+
+What is a Shell?
+    A program used to interact with your operating system - typically an
+        interactive command prompt.
+
+What is Git?
+    A version control system used to organize code over time, maintain various
+        versions, and collaborate from a central location on a server.
+
+
+
+
+Today's Main Questions:
+
+1. Where is 'ls' located?
+
+2. How large is my `/.cshrc?`
+
+3. How do I prevent people from reading my work?
+
+4. How do I create a shortcut to my course dropbox?
+
+5. Where did I put that cpp file?
+
+
+
+
+Now let's talk about filesystems (located on your hard drive)
+    
+    - organized in a hierarchy
+        - root
+            - parent
+                - child
+                - child
+            - parent
+                -child
+
+                etc.
+
+    ex:     / _ afs - network affiliated file system (lives on a network drive)
+                bin -  binary executables
+                etc -  configs
+                var - application data
+                lib - libraries
+                tmp - scratch space (anyone can write to this dir)
+                usr - user binaries (programs needed for OS to function)
+
+            [note: this is volatile - may be deleted upon reboot (inram)]
+                /var/tmp is non-volatile and open to anyone.
+
+    A hard drive will likely be divided into partitions (my arch installation 
+        has 4 partitions - boot (fat32), root (ext4), swap (swap), home (ext4)
+
+
+
+    Relative path:  include ../../something as a reference to some current path
+    Absolute path:  relative to the root directory (i.e. /bin/usr/)
+
+
+Answer to question 1:
+
+    The $PATH variable (environment variable) holds directories in which your
+    computer searches for a command (i.e. asks each dir if they have ls)
+        Add a directory to your path variable to always have it available @cmd 
+        
+
+Answer to question 3:
+
+    File Permissions:
+        
+        Files have associated flags:  read, write, execute (r w x)
+    
+        A file has different permissions for the user, , and others.
+
+        We represent the three flags combined in octal since there are 8 comb.
+
+   user     r w x
+            1 1 0  --> 6
+
+            r w x
+            1 0 0  --> 4
+
+   others   r w x
+            1 0 0  --> 4
+
+            change permissions using chmod command
+
+
+Softlinks are files that contain a location of where to reference (like a ptr)
+
+
+
+
+
+
+
+
+
+
+
+
+    TO DO: 
+    
+    - read more about inode data structures, which hold all file
+        information other than name and the file's actual data.
+
+    - changing a name of a file in the system doesn't actually move any data,
+        it simply modifies the inode!
+
+    - draw out hierarchy of file data on board
+
+    - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

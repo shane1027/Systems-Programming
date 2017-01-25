@@ -1,0 +1,21 @@
+New commands encountered (or covered in further detail)
+
+
+du - used to estimate file space usage
+
+    ls -l can also list properties of a file, but isn't useful when performed  
+    on a symbolic link.
+
+chmod - change the permissions on a file (covered more in depth)
+
+using the >> means 'append to a file'.  For example:
+    
+    touch abc
+    (write a word in abc)
+    echo hello >> abc
+    cat abc
+   >hello
+   >hello
+    
+
+
