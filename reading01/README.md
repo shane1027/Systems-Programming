@@ -17,6 +17,27 @@ Reading 01
 
 ### Question 2
 
-**a.)** 
+**a.)** 'cat 2002-\*\* > combined2002' 
+
+**b.)** 'cat 200\*-12 > combined12' 
+
+**c.)** 'cat 200\*-0{1...10}'
+
+**d.)** 'cat 200{2,4,6}-{01,03,05,07,09,11}'
+
+**e.)** 'cat 200{2...4}-{09...12}'
+
+
+### Question 3
+
+**a.)** Huxley and Tux
+
+**b.)** Huxley
+
+**c.)** None
+
+**d.)** 'chmod 755 Tux'
+
+**e.)** 'chmod 600 Tux'
 
 
