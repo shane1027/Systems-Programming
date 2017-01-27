@@ -41,3 +41,18 @@ Reading 01
 **e.)** 'chmod 600 Tux'
 
 
+### Question 4
+
+**a.)** Suspend the process with ctrl+z.
+
+**b.)** Resume the process by executing 'fg'.
+
+**c.)** Send the EOF character / command using ctrl+d.
+
+**d.)** Switch to bc using 'fg', and send the interrupt signal with ctrl+c.
+
+**e.)** Run 'ps ux', note the PID of 'bc', and then run 'kill -kill {PID}'
+
+
+
+
