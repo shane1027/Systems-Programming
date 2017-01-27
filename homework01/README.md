@@ -2,7 +2,7 @@ Homework 01
 ===========
 
 
-## Activity 1
+## Activity 1: Permissions and ACLs
 
 #### Question 1
 
@@ -74,7 +74,7 @@ b.) AFS likely takes precedence since using 'ls -l' in the nd.edu/ directory sho
 
 
 
-## Activity 2
+## Activity 2: File Operations
 
 #### Timing Commands
 
@@ -100,6 +100,49 @@ Although both utilize the 'mv' command, renaming the folder is significantly fas
 #### Question 2
 
 Removing the directory from the local drive does not entail transferring any information that the files contain... rather, it removes the inode data structure information saying the disk space in which the files reside is being used.  They still exit but will be overwritten once the hard drive space is used for another purpose.
+
+
+## Activity 3: Redirection
+
+#### Question 1
+
+Enter the command 'bc < math.txt' to send the contents of math.txt to the interpreter.
+
+#### Question 2
+
+To save the output of math.txt parsed through bc:  'bc < math.txt &> output.txt'
+
+#### Question 3
+
+Suppress the errors by sending stderr to the bit bucket:  'bc < math.txt > output.txt 2> /dev/null'
+
+#### Question 4
+
+Use the following command: 'cat math.txt | bc -q', although this is less efficient because we are running the process 'cat' on top of just redirecting an output.
+
+
+## Activity 4: Pipelines
+
+#### Question 1
+
+Command to search for users w/ a certain shell:  'less /etc/passwd | grep -e '/sbin/nologin' -c'
+
+#### Question 2
+
+Command to list the number of users currently logged in:  'ps -aux | awk '{print $1}' | uniq | wc -l'
+
+#### Question 3
+
+Command to list the 5 largest files in /etc and suppress errors:  'du /etc 2> /dev/null | sort -n | tail -n 5'
+
+#### Question 4
+
+Find the number of instances of bash running:  'ps aux | awk '{print $11}' | grep -ce 'bash'
+
+
+## Activity 5: Processes and Signals
+
+#### Question 1 
 
 
 
