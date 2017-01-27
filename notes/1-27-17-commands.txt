@@ -1,0 +1,17 @@
+
+
+Went over usage of 'find':
+
+    ex. find ~ -name '*.cpp'
+
+        Finds all .cpp files within the home directory and below.
+
+    How about running a command on each file that is a match?
+
+        find ~ -name '*.cpp' -exec stat {} \;
+
+   Note that this starts an individual process for each file found!
+
+   Instead, we could see the same results (much faster too) w/ | xargs stat
+
+
