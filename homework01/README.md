@@ -144,6 +144,21 @@ Find the number of instances of bash running:  'ps aux | awk '{print $11}' | gre
 
 #### Question 1 
 
+a.) Sending an EOF or interrupt signal did not work.
+
+b.) Running 'kill {PID}' only worked with the '-kill' flag.
+
+#### Question 2
+
+a.) The troll application can be killed using a pipeline such as the following from another terminal: 'ps ux | grep -e TROLL | awk '{print $2}' | xargs kill -kill'
+
+b.) 'kill -9 26837' killed the troll from my other terminal.
+
+#### Question 3
+
+Every 'kill -1-9' I used resulted in a taunt or insult other than 9 (which killed it) and 5 (which caused a core dump leading to process failure).
+
+
 
 
 
