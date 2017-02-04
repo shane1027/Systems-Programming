@@ -140,7 +140,24 @@ Eleventh command: `strings sryan8.lockbox`, which gives all printable strings
 hardcoded in the file.  Now `pushd ~` to write a small script "crack.sh" to try all of
 those strings until one of them works as a password for running the lockbox!
 
-12th command:
+12th command: After making and running the script "crack.sh", I found that the
+same task can be accomplished with the following command: `strings
+sryan8.lockbox | while read line; do sryan8.lockbox $line; done`, which
+returned my password: 902203a938136284fedbe6f3460afcad
+
+13th command: `curl
+xavier.h4x0r.space:9876/sryan8/902203a938136284fedbe6f3460afcad` which returned
+a message for me to give to Bobbit on the slack channel for this class.
+
+14th command:  awesome, Bobbit gave me a message for the Oracle: `ZmVsbmE4PTE0ODYxNzg0MjU=`.  Now to use `telnet xavier.h4x0r.space:9111` to connect to the Oracle.
+
+
+## The Oracle accepted my message!
+
+#### What a cool assignment, thanks pbui!
+
+The oracle said I have it in me, but am waiting for something.  then the
+awesome matrix text waterfall appeared :)
 
 
 
