@@ -90,3 +90,76 @@ issue.
 
 
 
+## Activity 3
+
+First command: `ping xavier.h4x0r.space` to test my connection.
+
+Second command: `nmap -p 9000-9999 -Pn xavier.h4x0r.space` to scan ports
+    note: the -Pn skips host discovery
+
+    This returned info for three ports:
+
+    PORT        STATE   SERVICE
+    9097/tcp    open    unknown
+    9111/tcp    open    DragonIDSConsole
+    9876/tcp    open    sd
+
+Third command: `traceroute xavier.h4x0r.space` which gave mostly asterisks
+
+Fourth command: `telnet xavier.h4x0r.space 9097` which was closed by foreign
+host.
+
+Fifth command: `telnet xavier.h4x0r.space 9111` which opened up a dialogue with
+a sheep.  I told it my name and a random message and it closed the connection.
+
+Sixth command: Okay, I must need some password or passphrase to please the
+Oracle.  Scanning for http server things: `nmap --script=http-enum -Pn
+xavier.h4x0r.space` returned:
+
+PORT     STATE SERVICE
+22/tcp   open  ssh
+8888/tcp open  sun-answerbook
+9111/tcp open  DragonIDSConsole
+9876/tcp open  sd
+
+
+Seventh command: `nmap -sV --version-intensity 5 -Pn xavier.h4x0r.space -p
+9876` which returned an unrecognized service "sd?"
+
+Eighth command: `wget -p xavier.h4x0r.space:9111 xavier.h4x0r.space:9876`
+which explained how to get my passcode by finding lockbox.
+
+Ninth command: `find | grep -i sryan8` in the ~pbui/pub/oracle/lockboxes
+directory, which returned the folder in which my files are stored.
+
+Tenth command: changed directory to where my lockbox file is stored and
+executed the script `./sryan8.lockbox`, then again with a password, but it just
+exited with an error.
+
+Eleventh command: `strings sryan8.lockbox`, which gives all printable strings
+hardcoded in the file.  Now `pushd ~` to write a small script "crack.sh" to try all of
+those strings until one of them works as a password for running the lockbox!
+
+12th command:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
