@@ -122,14 +122,12 @@ def validate_field(field):
 # match in a list.
 def regex_children(json, field, regex):
     num_children = len(json['data']['children'])
-    print 'num children'
-    print num_children
     matching_children = []
     for this_child in range(num_children):
-        match = re.findall(regex,json['data']['children'][this_child]['data'][field])
-        if len(match) > 0:
-            matching_children.append(this_child)
+        match = re.search(regex,json['data']['children'][this_child]['data'][field])
 
+        if match != None:
+            matching_children.append(this_child)
     return matching_children
 
 
@@ -138,17 +136,30 @@ def print_posts(json,head,post_list):
     if head > len(post_list):
         head = len(post_list)
     for num in range(head):
-        print_this_post = post_list[num]
-        print '{}.  Title: {}'.format(num+1,get_field(json,'title',num))
-        print '     Author: {}'.format(get_field(json,'author',num))
-        print '     Link: {}'.format(get_field(json,'url',num))
-        print '     Short: {}'
+        permalink = 'https://www.reddit.com' + get_field(json,'permalink',post_list[num])
         print '\n'
+        if num > 8:
+            print '{}.  Title: {}'.format(num+1,get_field(json,'title',post_list[num]))
+        else:
+            print ' {}.  Title: {}'.format(num+1,get_field(json,'title',post_list[num]))
+        print '     Author: {}'.format(get_field(json,'author',post_list[num]))
+        print '     Link: {}'.format(permalink)
+        print '     Short: {}'.format(shorten_url(permalink))
+        print '\n'
+
+# In the above function, Link's field as 'url' may be more useful
+
+
+# Shorten the URL given
+def shorten_url(link):
+    params = dict(format='json', url=link)  # have to pass dictionary to .get
+    response = requests.get('http://is.gd/create.php', params=params)
+    short_json = response.json()
+    return short_json['shorturl']
 
 
  #Download the JSON data
 my_json = get_JSON(URL, headers)
-print type(my_json)
 
 # Generate a list of valid fields
 valid_fields = my_json['data']['children'][0]['data'].keys()
@@ -157,13 +168,12 @@ validate_field(FIELD)
 # Check children against regex provided, if one was provided
 if USE_REGEX:
     matched_posts = regex_children(my_json,FIELD,REGEX)
-    print matched_posts
 else:
     matched_posts = range(len(my_json['data']['children']))
-    print matched_posts
 
 # Now print out the first LIMIT posts
 print_posts(my_json,LIMIT,matched_posts)
+
 
 
 
