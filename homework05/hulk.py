@@ -108,9 +108,9 @@ if __name__ == '__main__':      # what does this mean? Something for multicore?
         if arg == '-a':
             ALPHABET = ARGUMENTS.pop(0)
         elif arg == '-c':
-            CORES = ARGUMENTS.pop(0)
+            CORES = int(ARGUMENTS.pop(0))
         elif arg == '-l':
-            LENGTH = ARGUMENTS.pop(0)
+            LENGTH = int(ARGUMENTS.pop(0))
         elif arg == '-p':
             PREFIX = ARGUMENTS.pop(0)
         elif arg == '-s':
@@ -120,14 +120,30 @@ if __name__ == '__main__':      # what does this mean? Something for multicore?
         else:
             usage(1)
 
+    # start a pool of workers with process number equal to num of cores
+    pool = multiprocessing.Pool(processes=CORES)
 
     # TODO: Load hashes set
     hash_set = set([line.strip() for line in open(HASHES)])
 
     # TODO: Execute smash function to get passwords
-    passwords = smash(hash_set, LENGTH, ALPHABET, PREFIX)
+
+    if LENGTH > 3:
+        length_crack = 3
+        length_prefix = int(LENGTH) - length_crack
+    else:
+        length_crack = LENGTH
+        length_prefix = 0
+
+    subsmash = functools.partial(smash, hash_set, length_crack, ALPHABET)
+
+    prefix_gen = (PREFIX+prefix for prefix in permutations(length_prefix,
+        ALPHABET))
+
+    passwords = itertools.chain.from_iterable(pool.imap(subsmash, prefix_gen))
 
     # TODO: Print passwords
+
     for p in passwords:
         print p
 
