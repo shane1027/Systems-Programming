@@ -1,7 +1,0 @@
-dag
-dbt
-dlz
-dqf
-dqk
-dvk
-d8e
