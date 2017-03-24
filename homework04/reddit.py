@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env py hon2.7
 
 # python script to scrape and filter reddit links from your favorite sub!
 

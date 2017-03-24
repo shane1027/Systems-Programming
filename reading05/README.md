@@ -21,7 +21,9 @@ Explain what for arg in sys.argv[1:]: does.
 Why is there a trailing , in print arg,?
 
 - Comma separated values correspond to Tuples in Python.  This makes the
-  argument an immutable value.
+  argument an immutable value. 
+
+  {Suppresses the trailing newline char!!!}
 
 #### Question 2
 

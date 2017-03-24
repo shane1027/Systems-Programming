@@ -140,6 +140,12 @@ if __name__ == '__main__':      # what does this mean? Something for multicore?
     prefix_gen = (PREFIX+prefix for prefix in permutations(length_prefix,
         ALPHABET))
 
+    # Note: it's ok that prefix_gen calls the generator permutations, because
+    # it will exhaust it's list after being iterated by the above definition,
+    # storing the needed list of prefixes ready to be served up by prefix_gen.
+    # This way, we don't interfere with the concurrent operation of
+    # permutations() later on once smash is finally called by pool.
+
     passwords = itertools.chain.from_iterable(pool.imap(subsmash, prefix_gen))
 
     # TODO: Print passwords
