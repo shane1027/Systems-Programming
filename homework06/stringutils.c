@@ -4,6 +4,9 @@
 
 #include <ctype.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 /**
  * Convert all characters in string to lowercase.
@@ -11,6 +14,13 @@
  * @return          Pointer to beginning of modified string
  **/
 char *	string_lowercase(char *s) {
+    char *c;
+
+    for (c = s; *c; c++) {
+        *c = tolower(*c); 
+    }
+
+    c = s;
     return s;
 }
 
@@ -20,6 +30,13 @@ char *	string_lowercase(char *s) {
  * @return          Pointer to beginning of modified string
  **/
 char *	string_uppercase(char *s) {
+    char *c;
+
+    for (c = s; *c; c++) {
+        *c = toupper(*c); 
+    }
+
+    c = s;
     return s;
 }
 
@@ -30,7 +47,14 @@ char *	string_uppercase(char *s) {
  * @return          Whether or not 's' starts with 't'
  **/
 bool	string_startswith(char *s, char *t) {
+    for (char *c = t; *c; c++) {
+        if (*c != *s) {
+            return false; 
+        }
+        s++;
+    }
     return true;
+
 }
 
 /**
@@ -40,6 +64,18 @@ bool	string_startswith(char *s, char *t) {
  * @return          Whether or not 's' ends with 't'
  **/
 bool	string_endswith(char *s, char *t) {
+    char *f;
+    char *g;
+    for (f = s; *f; f++) {}     // move pointers to end of string
+    for (g = t; *g; g++) {}
+    f--; g--;                   // index stopped at EOF, move back one
+
+    for (char *c = g; *c; c--) { // then just iterate like before,
+        if (*c != *f--) {        // decrementing!
+            return false; 
+        }
+    }
+
     return true;
 }
 
@@ -49,6 +85,9 @@ bool	string_endswith(char *s, char *t) {
  * @return          Pointer to beginning of modified string
  **/
 char *	string_chomp(char *s) {
+    int len = strlen(s);
+    if (*(s+len-1) == '\n') {*(s+len-1) = 0;}
+
     return s;
 }
 
@@ -58,7 +97,22 @@ char *	string_chomp(char *s) {
  * @return          Pointer to beginning of modified string
  **/
 char *	string_strip(char *s) {
-    return s;
+    char *c;
+    char *f;
+
+    for (c = s; isspace(*c); c++) {
+        *c = *(c+1);
+    }
+
+    int len = strlen(c);
+    f = (c+len-1);
+
+    while (isspace(*f)) {
+        *f-- = 0;
+        len--;
+    }
+
+    return (f-(len-1));
 }
 
 /**
@@ -68,7 +122,17 @@ char *	string_strip(char *s) {
  * @return          Pointer to beginning of modified string
  **/
 static char *	string_reverse_range(char *from, char *to) {
-    return from;
+    int len = ceil((to - from)/2.0);
+
+    while (from < to) {
+        *from ^= *to;
+        *to ^= *from;
+        *from ^= *to;
+        from++;
+        to--;
+    }
+
+    return from-len;
 }
 
 /**
@@ -77,7 +141,10 @@ static char *	string_reverse_range(char *from, char *to) {
  * @return          Pointer to beginning of modified string
  **/
 char *	string_reverse(char *s) {
-    return s;
+    char *c;
+    c = string_reverse_range(s, (s+strlen(s)-1));
+
+    return c;
 }
 
 /**
@@ -86,7 +153,23 @@ char *	string_reverse(char *s) {
  * @return          Pointer to beginning of modified string
  **/
 char *	string_reverse_words(char *s) {
-    return s;
+    char *c;
+    char *start;
+    char *end;
+    int len = strlen(s);
+
+    s = string_reverse_range(s, s+(len-1));
+
+    while (*s) {
+        for (c = s; isspace(*c); c++);
+        start = c;
+        while (!isspace(*c) && *c) {c++;}
+        end = (c-1);
+        s = string_reverse_range(start, end);
+        s = s + (c-s);
+    }
+
+    return s - (len);
 }
 
 /**
@@ -97,7 +180,34 @@ char *	string_reverse_words(char *s) {
  * @return          Pointer to beginning of modified string
  **/
 char *	string_translate(char *s, char *from, char *to) {
+    /*  This code translates a substring to another substring.. oops
+    char *c;
+    do {
+        c = strstr(s, from);
+        if (!c) {break;}
+        *c = *to;
+        //fputs(c, stdout);
+        //fputs(s, stdout);
+    } while (*c);
+
+    return s; */
+
+    int len_haystack = strlen(s);
+
+    if (strlen(from) != strlen(to)) {return s;}
+
+    while (*from) {
+        while (*s) {
+            if (*s == *from) {*s = *to;} 
+            s++;
+        }
+        s = s - len_haystack;
+        from++;
+        to++;
+    }
+
     return s;
+
 }
 
 /**
@@ -107,7 +217,7 @@ char *	string_translate(char *s, char *from, char *to) {
  * @return          Converted integer value
  **/
 int	string_to_integer(char *s, int base) {
-    return 0;
+    return strtol(s, NULL, base);
 }
 
 /* vim: set sts=4 sw=4 ts=8 expandtab ft=c: */

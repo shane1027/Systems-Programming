@@ -1,5 +1,5 @@
 CC=		gcc
-CFLAGS=		-g -gdwarf-2 -Wall -std=gnu99
+CFLAGS=		-g -gdwarf-2 -Wall -std=gnu99 -lm
 LD=		gcc
 LDFLAGS=	-L.
 AR=		ar
@@ -11,6 +11,14 @@ TARGETS=	libstringutils.a \
 all:		$(TARGETS)
 
 # TODO: Add rules for libstringutils.a libstringutils.so
+libstringutils.a:	stringutils.o
+	$(AR) $(ARFLAGS) $@ $^
+
+libstringutils.so:	stringutils.o
+	$(LD) $(LDFLAGS) -shared -o $@ $^
+
+stringutils.o:	stringutils.c
+	$(CC) -c -fPIC $(CFLAGS) -o $@ $^ 
 
 test:			test-libstringutils
 
