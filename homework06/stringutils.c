@@ -104,14 +104,15 @@ char *	string_strip(char *s) {
     }
 
     int len = strlen(c);
-    f = (c+len-1);
+    len--;
+    f = (c+len);
 
     while (isspace(*f)) {
         *f-- = 0;
         len--;
     }
 
-    return (f-(len-1));
+    return (f-(len));
 }
 
 /**
@@ -122,6 +123,8 @@ char *	string_strip(char *s) {
  **/
 static char *	string_reverse_range(char *from, char *to) {
     char *c = from;
+
+    if (*to == '\n') {to--;}
     
     while (from < to) {
         *from ^= *to;

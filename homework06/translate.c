@@ -41,6 +41,9 @@ void translate_stream(FILE *stream, char *source, char *target, int mode) {
         }
         if (mode & 1<<1) {
             c = string_strip(c);
+            int len = strlen(c);
+            *(c+len) = '\n';
+            *(c+len+1) = 0;
         }
         if (mode & 1<<2) {
             c = string_reverse(c); 
@@ -107,7 +110,7 @@ int main(int argc, char *argv[]) {
 
     /* Translate Stream */
 
-    if (!(argc - argind % 2)) {     // if there are an odd number of input args
+    if ((argc - argind) == 1 || (argc - argind) > 2) {     // if there are an odd number of input args
         usage(1);
     } else {
         if (argc != argind) {

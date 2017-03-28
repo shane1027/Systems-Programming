@@ -31,7 +31,8 @@ class Translate(unittest.TestCase):
     )
 
     def do_test(self, source='', target='', flag='', func=None, valgrind=False):
-        os.environ['LD_LIBRARY_PATH'] = ':'.join([os.curdir, os.environ['LD_LIBRARY_PATH']])
+        if 'LD_LIBRARY_PATH' in os.environ:
+            os.environ['LD_LIBRARY_PATH'] = ':'.join([os.curdir, os.environ['LD_LIBRARY_PATH']])
         for s in map(ctypes.create_string_buffer, Translate.Strings):
             command      = 'echo "{}" | {} ./translate-{} {} {} {} 2>&1'.format(
                     s.value,

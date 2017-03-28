@@ -25,7 +25,7 @@ int main(void) {
     };
 
     while (fgets(buff, BUFSIZ, stdin)) {
-            c = string_reverse(buff);
+            c = string_strip(buff);
             fputs(c, stdout);  
     }
     
