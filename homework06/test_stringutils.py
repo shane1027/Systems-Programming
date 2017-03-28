@@ -56,7 +56,7 @@ class StringUtils(unittest.TestCase):
         self.assertFalse(stringutils.string_endswith('abc', 'ab'))
         self.assertFalse(stringutils.string_endswith('abc', 'abc '))
         self.assertFalse(stringutils.string_endswith('bc', 'abc '))
-    
+
     def test_04_string_chomp(self):
         self.assertTrue(stringutils.string_chomp('') == '')
         self.assertTrue(stringutils.string_chomp('\n') == '')

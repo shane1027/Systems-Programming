@@ -6,7 +6,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 /**
  * Convert all characters in string to lowercase.
@@ -122,8 +121,8 @@ char *	string_strip(char *s) {
  * @return          Pointer to beginning of modified string
  **/
 static char *	string_reverse_range(char *from, char *to) {
-    int len = ceil((to - from)/2.0);
-
+    char *c = from;
+    
     while (from < to) {
         *from ^= *to;
         *to ^= *from;
@@ -132,7 +131,8 @@ static char *	string_reverse_range(char *from, char *to) {
         to--;
     }
 
-    return from-len;
+    return c;
+
 }
 
 /**
