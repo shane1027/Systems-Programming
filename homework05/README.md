@@ -69,5 +69,22 @@ alphabet yields 3^4 = 81 possibilities.
     (such as horse-staple-battery-xkcd)
 
 
+## How does the iv_map.py script work:
+
+#### How does it keep track of line numbers?
+	The line_num variable is incremented after evaluating each line.
+
+#### How does it remove undesirable characters?
+	The characters in each word are checked against a list of undesirable characters.
+
+## How does the iv_reduce.py script work:
+
+#### How does it aggregate the results for each word?
+	There is a dictionary called 'counts' that stores each word as a key and a list with correspondance to line number appearances as the key's value.  Every time the same word is encountered, the list stored at counts[word] has the new line appended to it.
+
+#### How does it output the results in the correct format?
+	Print statements with trailing commas enable the printing to work in a more
+    unique way, so that the word can be printed first, followed by an iteration
+    of print statements over the values in it's counts[word] list.
 
 
