@@ -37,7 +37,8 @@ struct list *	list_create() {
  * @return  NULL pointer.
  */
 struct list *	list_delete(struct list *l) {
-    node_delete(l->head, true);
+    if (l->size)
+        node_delete(l->head, true);
     free(l);
     return NULL;
 }
@@ -51,7 +52,7 @@ struct list *	list_delete(struct list *l) {
  */
 void		list_push_front(struct list *l, char *s) {
     struct node* new_node = node_create(s, l->head);// add new node @list front         
-    printf("head is %p\n", l->head);
+    //printf("head is %p\n", l->head);
     l->head = new_node;                    // update list structure head + size
     if (!l->size) {
         l->tail = new_node; 
@@ -88,6 +89,8 @@ void		list_push_back(struct list *l, char *s) {
 void		list_dump(struct list *l, FILE *stream) {
     struct node* current_node = l->head;
     do {
+        if (!l->size)       // if there are no nodes, nothing to dump, silly!
+            break;
         node_dump(current_node, stream);
         //printf("Next node: %p\n", current_node->next);
     } while ((current_node = current_node->next));
@@ -129,15 +132,18 @@ struct node **	list_to_array(struct list *l) {
  */
 void		list_qsort(struct list *l, node_compare f) {
     struct node ** node_array = list_to_array(l);
-    qsort(node_array, l->size, sizeof(struct node), f);
+    qsort(node_array, (size_t)l->size, (size_t)sizeof(struct node*), f);
+    puts("well at least we didn't crash during qsort.");
 
     int i;
     for (i = 0; i < (l->size)-1; i++) {
         node_array[i]->next = node_array[i+1];
     }
-    node_array[i]->next = 0;    // i is the index of last node in list here
+    node_array[i]->next = NULL;    // i is the index of last node in list here
     l->head = node_array[0];
     l->tail = node_array[(l->size)-1];
+
+    free(node_array);
     
 }
 
@@ -150,11 +156,12 @@ void		list_qsort(struct list *l, node_compare f) {
 void		list_reverse(struct list *l) {
     struct node* current_node = l->head;
     l-> tail = current_node;
-
-    for (int i = 0; i < (l->size)-1; i++) {
-         l->head = reverse(current_node->next, current_node);
+    printf("Current head: %p\n", current_node);
+    for (int i = 0; i < l->size; i++) { 
+        l->head = reverse(current_node->next, current_node);
+        current_node = l->head;
     }
-
+    l->tail->next = NULL;
 }
 
 /**
@@ -166,18 +173,43 @@ void		list_reverse(struct list *l) {
  * @return  The new head of the singly-linked list.
  */
 struct node*	reverse(struct node *curr, struct node *prev) {
-    curr->next = prev;
+
+    printf("prev-next: %s and current = %s\n\n", prev->next->string, curr->string);
+    struct node *orig_curr_node_next; // next node to recurse w/
+
+    if (!curr->next) {
+        printf("whoops that's null\n");
+        curr->next = prev;
+        return prev;
+    }
+
+    orig_curr_node_next = curr->next;
+
+    printf("curr->next = %s\n", curr->next->string);
+    printf("orig_curr_node_next = %s\n", orig_curr_node_next->string);
+    printf("prev = %s\n\n", prev->string);
+
+    //curr->next = prev;
+    prev->next = orig_curr_node_next;
+
+    printf("prev now points to %s\n\n", prev->next->string);
+
+    printf("recursing...\n");
+    printf("entering with previous node = %s, current = %s\n", prev->string, prev->next->string);
+    orig_curr_node_next = reverse(prev->next, prev); 
+    curr->next = orig_curr_node_next;
+    printf("%s now points to %s\n", curr->string, curr->next->string);
     return curr;
 }
 
-/**
- * Sort list using merge sort.
- *
- * This sorts the list using a custom implementation of merge sort.
- * @param   l	    List structure.
- * @param   f	    Node comparison function.
- */
-void		list_msort(struct list *l, node_compare f) {
+    /**
+     * Sort list using merge sort.
+     *
+     * This sorts the list using a custom implementation of merge sort.
+     * @param   l	    List structure.
+     * @param   f	    Node comparison function.
+     */
+    void		list_msort(struct list *l, node_compare f) {
     if ((l->head == NULL) || (l->head->next == NULL)) {
         return; 
     }

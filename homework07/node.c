@@ -77,6 +77,7 @@ struct node *   node_delete(struct node *n, bool recursive) {
 
 }
 
+
 /**
  * Dump node to stream.
  * 

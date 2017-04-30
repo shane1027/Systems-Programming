@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
 
     puts("QSort...");
     list_qsort(l, node_compare_string);
+    puts("successfully sorted!");
     list_dump(l, stdout);
     for (n = l->head; n && n->next; n = n->next) {
         assert(node_compare_string(&n, &n->next) < 0);
@@ -79,11 +80,14 @@ int main(int argc, char *argv[]) {
     
     puts("Reversing...");
     list_reverse(l);
+    puts("finished reverse!");
     list_dump(l, stdout);
     for (n = l->head; n && n->next; n = n->next) {
         assert(node_compare_string(&n, &n->next) > 0);
     }
     assert(l->tail == n);
+
+    return 0;
     
     puts("MSort...");
     list_msort(l, node_compare_string);
