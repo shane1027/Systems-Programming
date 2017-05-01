@@ -41,6 +41,21 @@ struct node *	node_create(char *string, struct node *next) {
  * @return  NULL pointer.
  */
 struct node *   node_delete(struct node *n, bool recursive) {
+    struct node * temp_next = n->next;
+
+    free(n->string);
+    free(n);
+
+    if (recursive)
+        if (temp_next) {
+            //printf("recursing with node %s\n", temp_next->string);
+            node_delete(temp_next, true);
+        }
+
+    return NULL;
+
+    /*      unsure if the following implementation works correctly.  trying
+     *      again...
     struct node* temp;
 
     if (recursive) {
@@ -50,7 +65,7 @@ struct node *   node_delete(struct node *n, bool recursive) {
             temp->next = NULL;
             free(temp->string);
             free(temp);
-            temp = NULL;
+            //temp = NULL;
         }
 
         return temp;
@@ -62,6 +77,10 @@ struct node *   node_delete(struct node *n, bool recursive) {
 
         return n;
     }
+    */
+
+
+
 
 /*    if (recursive) {
         if (n->next) {
@@ -98,11 +117,20 @@ void            node_dump(struct node *n, FILE *stream) {
  * @return  < 0 if a < b, 0 if a == 0, > 0 if a > b
  */
 int		node_compare_number(const void *a, const void *b) {
+    struct node * A = (struct node *)a;
+    struct node * B = (struct node *)b;
+
+    int num_A = (A->number);    int num_B = (B->number);
+    return (num_A - num_B);
+
+    /*      this is also not super clear... let's make it more readable
+     *
     if (((struct node*)a)->number == 0) {
         return 0; 
     } else {
         return ((((struct node*)a)->number) - (((struct node*)b)->number));
     }
+    */
 }
 
 /**
@@ -114,7 +142,26 @@ int		node_compare_number(const void *a, const void *b) {
  * @return  < 0 if a < b, 0 if a == 0, > 0 if a > b
  */
 int		node_compare_string(const void *a, const void *b) {
+
+    struct node * A = (struct node *)a;
+    struct node * B = (struct node *)b;
+
+    return (strcmp(A->string, B->string));
+
+    /*      // this implementation is not clear and I shouldn't be comparing
+     *      lengths of the strings... this is a hacky way to fix a shortcoming 
+     *      of msort which we aren't supposed to be fixing
+    int len_a = strlen(((struct node*)a)->string);
+    int len_b = strlen(((struct node*)b)->string);
+    if (len_a != len_b) {
+        if (len_a < len_b)
+            return -1;
+        else
+            return 1;
+    }
+
     return strcmp((((struct node*)b)->string), (((struct node*)a)->string));
+    */
 }
 
 /* vim: set sts=4 sw=4 ts=4 expandtab ft=c: */

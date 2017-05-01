@@ -27,21 +27,14 @@ int main(int argc, char *argv[]) {
         assert(l->size == i + 1);
         assert(strcmp(l->head->string, HEROES[i]) == 0);
     }
-    // printf("about to dump list..\n");
     list_dump(l, stdout);
-    // printf("got past list dump\n");
     
     struct node *n = l->head;
     for (int i = sizeof(HEROES)/sizeof(char *) - 2; i >= 0; i--, n = n->next) {
-        // printf("i is equal to %d\n", i);
     	assert(strcmp(n->string, HEROES[i]) == 0);
-    	if (n->next == NULL) {
-            //printf("looking at tail...\n");
+    	if (n->next == NULL)
             assert(l->tail == n);
-        }
     }
-
-    //printf("everything seems to be ok for push_front!\n");
     
     l = list_delete(l);
     assert(l == NULL);
@@ -57,7 +50,6 @@ int main(int argc, char *argv[]) {
         assert(l->size == i + 1);
         assert(strcmp(l->tail->string, HEROES[i]) == 0);
     }
-    //printf("about to dump list..\n");
     list_dump(l, stdout);
     
     n = l->head;
@@ -67,11 +59,8 @@ int main(int argc, char *argv[]) {
             assert(l->tail == n);
     }
 
-    //printf("everything seems ok for list_push_back!\n");
-
     puts("QSort...");
     list_qsort(l, node_compare_string);
-    puts("successfully sorted!");
     list_dump(l, stdout);
     for (n = l->head; n && n->next; n = n->next) {
         assert(node_compare_string(&n, &n->next) < 0);
@@ -80,14 +69,11 @@ int main(int argc, char *argv[]) {
     
     puts("Reversing...");
     list_reverse(l);
-    puts("finished reverse!");
     list_dump(l, stdout);
     for (n = l->head; n && n->next; n = n->next) {
         assert(node_compare_string(&n, &n->next) > 0);
     }
     assert(l->tail == n);
-
-    return 0;
     
     puts("MSort...");
     list_msort(l, node_compare_string);

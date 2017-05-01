@@ -19,7 +19,7 @@ struct list *	list_create() {
     struct list* new_list;
 
     if ((new_list = malloc(sizeof(struct list))) == NULL) {
-        printf("Oops! Didn't get memory for a new list :(\n");
+        fprintf(stderr, "Oops! Didn't get memory for a new list :(\n");
         return NULL;
     } else {
         new_list->head = NULL;
@@ -37,8 +37,9 @@ struct list *	list_create() {
  * @return  NULL pointer.
  */
 struct list *	list_delete(struct list *l) {
-    if (l->size)
+    if (l->size) {
         node_delete(l->head, true);
+    }
     free(l);
     return NULL;
 }
@@ -57,7 +58,7 @@ void		list_push_front(struct list *l, char *s) {
     if (!l->size) {
         l->tail = new_node; 
     }
-    l->size += 1;
+    l->size++;
 }
 
 /**
@@ -68,7 +69,7 @@ void		list_push_front(struct list *l, char *s) {
  * @param   s	    String.
  */
 void		list_push_back(struct list *l, char *s) {
-    struct node* new_node = node_create(s, 0);      // add new node @ list end
+    struct node* new_node = node_create(s, NULL);      // add new node @ list end
     if (!l->size) {
         l->head = new_node; 
         l->tail = new_node;
@@ -76,7 +77,7 @@ void		list_push_back(struct list *l, char *s) {
         l->tail->next = new_node;             // adjust prev. end to pt to new end
         l->tail = new_node;
     }
-    l->size += 1;
+    l->size++;
 }
 
 /**
@@ -133,7 +134,7 @@ struct node **	list_to_array(struct list *l) {
 void		list_qsort(struct list *l, node_compare f) {
     struct node ** node_array = list_to_array(l);
     qsort(node_array, (size_t)l->size, (size_t)sizeof(struct node*), f);
-    puts("well at least we didn't crash during qsort.");
+    //puts("well at least we didn't crash during qsort.");
 
     int i;
     for (i = 0; i < (l->size)-1; i++) {
@@ -154,14 +155,8 @@ void		list_qsort(struct list *l, node_compare f) {
  * @param   l	    List structure.
  */
 void		list_reverse(struct list *l) {
-    struct node* current_node = l->head;
-    l-> tail = current_node;
-    printf("Current head: %p\n", current_node);
-    for (int i = 0; i < l->size; i++) { 
-        l->head = reverse(current_node->next, current_node);
-        current_node = l->head;
-    }
-    l->tail->next = NULL;
+    l->tail = l->head;              // swap 'em out, reverse 'em up
+    l->head = reverse(l->head, NULL);
 }
 
 /**
@@ -174,47 +169,47 @@ void		list_reverse(struct list *l) {
  */
 struct node*	reverse(struct node *curr, struct node *prev) {
 
-    printf("prev-next: %s and current = %s\n\n", prev->next->string, curr->string);
-    struct node *orig_curr_node_next; // next node to recurse w/
+    struct node *orig_curr_node_next = curr; // next node to recurse w/
+    // initialize above so that it has a value when reaching first case
+    //
+    //puts("in the reversing function");
 
-    if (!curr->next) {
-        printf("whoops that's null\n");
+    if (curr->next == NULL) {
         curr->next = prev;
-        return prev;
+        //puts("made it to case 1");
+        return curr;
+    } else {
+        //puts("made it to case 2");
+        //fprintf(stdout, "recursing with node next as %s...\n", prev->next->string);
+        orig_curr_node_next = reverse(curr->next, curr); 
     }
 
-    orig_curr_node_next = curr->next;
+    curr->next = prev;
+    return orig_curr_node_next;
 
-    printf("curr->next = %s\n", curr->next->string);
-    printf("orig_curr_node_next = %s\n", orig_curr_node_next->string);
-    printf("prev = %s\n\n", prev->string);
-
-    //curr->next = prev;
-    prev->next = orig_curr_node_next;
-
-    printf("prev now points to %s\n\n", prev->next->string);
-
-    printf("recursing...\n");
-    printf("entering with previous node = %s, current = %s\n", prev->string, prev->next->string);
-    orig_curr_node_next = reverse(prev->next, prev); 
-    curr->next = orig_curr_node_next;
-    printf("%s now points to %s\n", curr->string, curr->next->string);
-    return curr;
 }
 
-    /**
-     * Sort list using merge sort.
-     *
-     * This sorts the list using a custom implementation of merge sort.
-     * @param   l	    List structure.
-     * @param   f	    Node comparison function.
-     */
-    void		list_msort(struct list *l, node_compare f) {
-    if ((l->head == NULL) || (l->head->next == NULL)) {
-        return; 
-    }
+/**
+ * Sort list using merge sort.
+ *
+ * This sorts the list using a custom implementation of merge sort.
+ * @param   l	    List structure.
+ * @param   f	    Node comparison function.
+ */
+void		list_msort(struct list *l, node_compare f) {
+    //if ((l->head == NULL) || (l->head->next == NULL))
+        //return; 
 
-    
+    struct node *curr = NULL;
+    l->head = msort(l->head, f);
+    //puts("phew got past line 205");
+    curr = l->head;
+
+    while (curr->next)
+        curr = curr->next;
+
+    l->tail = curr;
+    l->tail->next = NULL;
 
 }
 
@@ -228,7 +223,17 @@ struct node*	reverse(struct node *curr, struct node *prev) {
  * @return  The new head of the list.
  */
 struct node *	msort(struct node *head, node_compare f) {
-    return NULL;
+    if ((head == NULL) || (head->next == NULL))
+        return head; 
+
+    struct node *left, *right;
+
+    split(head, &left, &right);
+    left = msort(left, f); right = msort(right, f);
+
+    //puts("finished msort func");
+
+    return merge(left, right, f);
 }
 
 /**
@@ -242,6 +247,31 @@ struct node *	msort(struct node *head, node_compare f) {
  */
 void		split(struct node *head, struct node **left, struct node **right) {
 
+    //puts("made it to split");
+
+    struct node *temp = head;           // use to find tail of left list
+
+    struct node *first = head->next;
+    struct node *second = first->next;
+
+    // fast-slow pointer approach
+
+    while (second && second->next) {          // once 
+        temp = first;
+        second = second->next->next;        // move twice
+        first = first->next;        // this will never hit null since
+                                    // it's always behind the ptr 'second'
+    }
+
+
+    *left = head;           // left starts at head and ends at temp
+    *right = first;         // right ends at the old tail, no need to add NULL
+    temp->next = NULL;      // close off left list
+
+
+
+
+    /* having trouble with this implementation.  starting again from scratch..
     if (head == NULL || head->next == NULL) {
         *left = head;
         *right = NULL;
@@ -262,6 +292,9 @@ void		split(struct node *head, struct node **left, struct node **right) {
         first->next = NULL;
 
     }
+    */
+
+    //puts("finished split");
 }
 
 /**
@@ -275,5 +308,45 @@ void		split(struct node *head, struct node **left, struct node **right) {
  * @return  The new head of the list.
  */
 struct node *	merge(struct node *left, struct node *right, node_compare f) {
-    return NULL;
+    
+    struct node * merged_list = NULL;
+
+    // potentially need new pointers for left and right to not modify
+    // accidentally
+    
+    struct node * temp_left = left;
+    struct node * temp_right = right;
+
+    //puts("started merging");
+    if (f(&temp_left, &temp_right) < 0) {merged_list = temp_left; temp_left = temp_left->next;}
+    else {merged_list = temp_right; temp_right = temp_right->next;}
+    struct node * merged_head = merged_list;
+
+    while (temp_left && temp_right) {
+        if (f(&temp_left, &temp_right) < 0) {   // compare the two nodes.  < 0, use left
+            merged_list->next = temp_left;
+            temp_left = temp_left->next;
+        } else {
+            merged_list->next = temp_right;
+            temp_right = temp_right->next;
+        }
+
+        merged_list = merged_list->next;
+    }
+    //puts("no");
+
+    if (left != NULL) {          // append rest of leftover list to merged_list
+        //puts("entered case 1");
+        merged_list->next = left;
+        //puts("why won't it get here");
+    }
+    else {
+        //puts("entered case two");
+        merged_list->next = temp_right;
+    }
+
+    //puts("finished merging");
+
+    return merged_head;
+
 }
