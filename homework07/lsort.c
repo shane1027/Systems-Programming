@@ -53,21 +53,25 @@ void lsort(FILE *stream, bool numeric, bool quicksort) {
     } */
 
     if (quicksort && numeric) {
+        //puts("got to qsort w/o string");
         list_qsort(listy_list, node_compare_number);
     } else if (quicksort) {
+        //puts("got to qsort w/ string");
         list_qsort(listy_list, node_compare_string);
     } else if (numeric) {
+        //puts("got to msort w/o string");
         list_msort(listy_list, node_compare_number);
     } else {
-        //puts("got here");
+        //puts("got to msort w/ string");
         list_msort(listy_list, node_compare_string);
     }
 
     for (nodey_node = listy_list->head; nodey_node; nodey_node = nodey_node->next) {
-        printf("%s\n", nodey_node->string);
+        printf("%s", nodey_node->string);
     }
 
-    free(listy_list);
+    list_delete(listy_list);
+
 
 }
 
@@ -101,6 +105,8 @@ int main(int argc, char *argv[]) {
 
     //printf("input arguments: %d for num and %d for quick\n", NUMERICAL, QUICK);
     //
+    
+    /*
     char buff[BUFSIZ];
     struct list *listy_list = list_create();
     struct node *nodey_node = NULL;
@@ -118,9 +124,10 @@ int main(int argc, char *argv[]) {
     }
 
     free(listy_list);
+    */
 
     /* Sort using list */
-    //lsort(stdin, NUMERICAL, QUICK);
+    lsort(stdin, NUMERICAL, QUICK);
 
     return EXIT_SUCCESS;
 }

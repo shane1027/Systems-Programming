@@ -230,9 +230,11 @@ struct node *	msort(struct node *head, node_compare f) {
 
     split(head, &left, &right);
     left = msort(left, f); right = msort(right, f);
+    //puts("received a return from recursive msort call");
 
     //puts("finished msort func");
 
+    //puts("about to call merge");
     return merge(left, right, f);
 }
 
@@ -246,9 +248,7 @@ struct node *	msort(struct node *head, node_compare f) {
  * @param   right   The right sublist.
  */
 void		split(struct node *head, struct node **left, struct node **right) {
-
-    //puts("made it to split");
-
+    //puts("made it to split")
     struct node *temp = head;           // use to find tail of left list
 
     struct node *first = head->next;
@@ -308,45 +308,38 @@ void		split(struct node *head, struct node **left, struct node **right) {
  * @return  The new head of the list.
  */
 struct node *	merge(struct node *left, struct node *right, node_compare f) {
-    
-    struct node * merged_list = NULL;
+	struct node * mod_list;
 
     // potentially need new pointers for left and right to not modify
     // accidentally
     
-    struct node * temp_left = left;
-    struct node * temp_right = right;
+	struct node *L = left;
+	struct node *R = right;
+	
 
     //puts("started merging");
-    if (f(&temp_left, &temp_right) < 0) {merged_list = temp_left; temp_left = temp_left->next;}
-    else {merged_list = temp_right; temp_right = temp_right->next;}
-    struct node * merged_head = merged_list;
+	if ( f(&L,&R)<0 ) { mod_list = L; L = L->next; }
+    else{ mod_list = R; R = R->next; }
+	struct node * mod_head = mod_list; //makes newHead the smaller of the two...
 
-    while (temp_left && temp_right) {
-        if (f(&temp_left, &temp_right) < 0) {   // compare the two nodes.  < 0, use left
-            merged_list->next = temp_left;
-            temp_left = temp_left->next;
-        } else {
-            merged_list->next = temp_right;
-            temp_right = temp_right->next;
-        }
+	while ( L && R ) {
+		if ( f(&L,&R)<0 ) {  // compare the two nodes.  < 0, use left
+			mod_list->next = L;
+			L=L->next;
+		} else {
+			mod_list->next = R;
+			R = R->next;
+		}
+		mod_list = mod_list->next; 
+	}
 
-        merged_list = merged_list->next;
-    }
-    //puts("no");
-
-    if (left != NULL) {          // append rest of leftover list to merged_list
-        //puts("entered case 1");
-        merged_list->next = left;
-        //puts("why won't it get here");
-    }
-    else {
-        //puts("entered case two");
-        merged_list->next = temp_right;
-    }
-
+	if (R == NULL) {
+		mod_list->next = L; // append rest of leftover list to merged_list
+	} else {
+		mod_list->next = R;
+	}
+	
     //puts("finished merging");
-
-    return merged_head;
-
+	return mod_head;
 }
+

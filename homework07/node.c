@@ -17,7 +17,7 @@
 struct node *	node_create(char *string, struct node *next) {
     struct node* new_node;
 
-    if ((new_node = malloc(sizeof(*next))) == NULL) {
+    if ((new_node = malloc(sizeof(struct node))) == NULL) {
     	printf("Oh no! Didn't get memory for new node :(\n");
     	return NULL;
 	}
@@ -117,10 +117,10 @@ void            node_dump(struct node *n, FILE *stream) {
  * @return  < 0 if a < b, 0 if a == 0, > 0 if a > b
  */
 int		node_compare_number(const void *a, const void *b) {
-    struct node * A = (struct node *)a;
-    struct node * B = (struct node *)b;
+    struct node ** A = (struct node **)a;
+    struct node ** B = (struct node **)b;
 
-    int num_A = (A->number);    int num_B = (B->number);
+    int num_A = ((*A)->number);    int num_B = ((*B)->number);
     return (num_A - num_B);
 
     /*      this is also not super clear... let's make it more readable
@@ -143,10 +143,10 @@ int		node_compare_number(const void *a, const void *b) {
  */
 int		node_compare_string(const void *a, const void *b) {
 
-    struct node * A = (struct node *)a;
-    struct node * B = (struct node *)b;
+    struct node ** A = (struct node **)a;
+    struct node ** B = (struct node **)b;
 
-    return (strcmp(A->string, B->string));
+    return (strcmp((*A)->string, (*B)->string));
 
     /*      // this implementation is not clear and I shouldn't be comparing
      *      lengths of the strings... this is a hacky way to fix a shortcoming 
