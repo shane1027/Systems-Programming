@@ -146,6 +146,16 @@ int		node_compare_string(const void *a, const void *b) {
     struct node ** A = (struct node **)a;
     struct node ** B = (struct node **)b;
 
+    int len_a = strlen((*A)->string);
+    int len_b = strlen((*B)->string);
+
+    if (len_a != len_b) {
+        if (len_a < len_b)
+            return -1;
+        else
+            return 1;
+    }
+
     return (strcmp((*A)->string, (*B)->string));
 
     /*      // this implementation is not clear and I shouldn't be comparing
