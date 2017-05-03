@@ -4,13 +4,43 @@ Homework 06
 ### Activity 1
 ####Describe how your string_reverse_words function works and analyze its time complexity and space complexity in terms of Big-O notation.
 
+Time complexity: O(n)
+Space complexity: O(1)
+
+The function seeks through the sentence, and upon encountering a space,
+reverses all characters up to that point since the previous space.
+
 ####Describe how your string_translate function works and analyze its time complexity and space complexity in terms of Big-O notation.
+
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+Translate iterates through the input looking for a given character from the set
+of to be translated characters given.  If one is found, it is replaced with the
+appropriate desired translation. This is done once for each charater to
+translate.
 
 ####Describe how your string_to_integer function works and analyze its time complexity and space complexity in terms of Big-O notation.
 
+This simply calls strtol on the input since that is an available function in
+the C library using the appropriate inputs.  A manual implementation of string
+to integer would involve iterating through the input and interpreting values as
+the translation from ASCII numbers to integers and then returning those
+integers.  This could be accomplished by defining a set of translation pairs
+including digits and then using the translate function.  strtol() seems to be
+O(n) in time and constant in space.
+
 ####What is the difference between a shared library such as libstringutils.so and a static library such as libstringutils.a?
 
+The shared library is used as a reference when the program runs, whereas the
+static library contains all necessary code on it's own.  Fewer dependencies are
+needed with a static library so there is an increase in portability in some
+cases.
+
 ####Comparing the sizes of libstringutils.a and libstringutils.so, which one is larger? Why?
+
+The static one (libstringutils.a) is larger since it contains all necessary
+code for the library to function.
 
 
 
