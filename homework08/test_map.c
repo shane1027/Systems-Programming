@@ -12,6 +12,16 @@ int main(int argc, char *argv[]) {
     Map *m = NULL;
     char key[BUFSIZ];
 
+    /*
+    Value val = { .number = 45 };
+    Entry * tmp = entry_create("0", val, NULL, NUMBER);
+    printf("Entry %s has value %ld and next ptr %p\n", tmp->key, 
+            tmp->value.number, tmp->next);
+
+    entry_delete(tmp, false);
+    */
+
+
     puts("Testing map creation (defaults)...");
     /*
     m = map_create(0, 0);
@@ -20,17 +30,23 @@ int main(int argc, char *argv[]) {
     assert(m->load_factor == DEFAULT_LOAD_FACTOR);
     assert(m->size        == 0);
     */
-    int test = 1;
+    int test = 5;
     m = map_create(test, 1);
     assert(m != NULL);
     assert(m->capacity    == test);
     assert(m->load_factor == 1);
     assert(m->size        == 0);
 
+    puts("map 'm' is allocated");
+
     for (int i = 0; i < test; i++) {
         printf("Entry %s has value %ld and next ptr %p\n", m->buckets[i].key, 
-                m->buckets[i].value.number, m->buckets[i].next);
+            m->buckets[i].value.number, m->buckets[i].next);
     }
+
+    map_delete(m);
+    
+    puts("map deleted");
 
     return 0;
 

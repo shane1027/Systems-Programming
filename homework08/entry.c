@@ -22,7 +22,11 @@ Entry *		entry_create(const char *key, const Value value, Entry *next, Type type
     }
 
     /*  okay, we've got a new entry!  fill her up   */
-    new_entry->next = next;
+    if (next == NULL) {
+        new_entry->next = NULL;
+    } else {
+        new_entry->next = next;
+    }
     new_entry->key = strdup(key);
     new_entry->type = type;
     //entry_update(new_entry, value, type);

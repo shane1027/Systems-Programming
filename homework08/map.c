@@ -25,15 +25,20 @@ Map *	        map_create(size_t capacity, double load_factor) {
         capacity = DEFAULT_CAPACITY;
 
     /* Allocate an array full of entry structures for bucket    */
-    Entry * buckets = malloc(sizeof(Entry *)*capacity);
-    Value dummy_value = {0};
+    Entry * buckets = malloc(sizeof(Entry)*capacity);
+    Value dummy_value = { .number = 42 };
     char dummy_key[BUFSIZ];
     
     //debug("got a bucket");
 
     for (int i = 0; i < capacity; i++) {
         sprintf(dummy_key, "%d", i);
-        buckets[i] = *entry_create(dummy_key, dummy_value, NULL, NUMBER);
+        //Entry * tmp = entry_create(dummy_key, dummy_value, NULL, NUMBER);
+        buckets[i].key = strdup(dummy_key);
+        buckets[i].value = dummy_value;
+        buckets[i].type = NUMBER;
+        buckets[i].next = NULL;
+        //entry_delete(tmp, false);
     }
 
     //debug("got some entries");
@@ -48,6 +53,8 @@ Map *	        map_create(size_t capacity, double load_factor) {
 
     new_map->size = 0;
 
+    new_map->buckets = buckets;
+
     return new_map;
 }
 
@@ -58,11 +65,14 @@ Map *	        map_create(size_t capacity, double load_factor) {
  */
 Map *	        map_delete(Map *m) {
     for (int i = 0; i < m->capacity; i++) {
-        entry_delete(&m->buckets[i], true);
+        if (m->buckets[i].next != NULL)
+            entry_delete(m->buckets[i].next, true);
+        free(m->buckets[i].key);
     }
     
     free(m->buckets);
     free(m);
+    m = NULL;
 
     return m;
 }
