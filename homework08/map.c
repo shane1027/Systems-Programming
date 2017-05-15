@@ -112,7 +112,7 @@ void            map_insert(Map *m, const char *key, const Value value, Type type
     while (last_entry->next != NULL) {
         last_entry = last_entry->next;        
     }
-    //debug("got here");
+    debug("got to last entry");
 
     /*
     Entry * last_entry = &m->buckets[bucket_address];
@@ -124,6 +124,7 @@ void            map_insert(Map *m, const char *key, const Value value, Type type
     }   */
 
     last_entry->next = entry_create(key, value, NULL, type);
+    debug("linked last entry to new insertion");
 //    debug("got to next entry");
 
     m->size++;
