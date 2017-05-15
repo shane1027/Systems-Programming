@@ -13,11 +13,26 @@ int main(int argc, char *argv[]) {
     char key[BUFSIZ];
 
     puts("Testing map creation (defaults)...");
+    /*
     m = map_create(0, 0);
     assert(m != NULL);
     assert(m->capacity    == DEFAULT_CAPACITY);
     assert(m->load_factor == DEFAULT_LOAD_FACTOR);
     assert(m->size        == 0);
+    */
+    int test = 1;
+    m = map_create(test, 1);
+    assert(m != NULL);
+    assert(m->capacity    == test);
+    assert(m->load_factor == 1);
+    assert(m->size        == 0);
+
+    for (int i = 0; i < test; i++) {
+        printf("Entry %s has value %ld and next ptr %p\n", m->buckets[i].key, 
+                m->buckets[i].value.number, m->buckets[i].next);
+    }
+
+    return 0;
 
     puts("Testing map insertion...");
     for (size_t i = 0; i < DEFAULT_CAPACITY; i++) {
